@@ -1,12 +1,10 @@
 .main-table {
   margin: 20px auto;
 }
-
 .table-head {
   background-color: #777777;
   color: white;
 }
-
 .table-head-item th {
   padding: 14px;
 }
@@ -17,7 +15,6 @@
   border-bottom: 1px solid white;
   background-color: #e8eaf5;
 }
-
 .table-body-button {
   background-color: transparent;
   border: none;
@@ -30,7 +27,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .flex-start {
   display: flex;
   justify-content: start;
@@ -40,23 +36,3 @@
 .category-icon {
   margin-right: 4px;
 }
-
-html {
-  line-height: 1.2;
-  -webkit-text-size-adjust: 100%;
-}
-
-html,
-* {
-  font-family: "Montserrat", sans-serif;
-}
-
-body {
-  margin: 0;
-}
-
-table {
-  border-spacing: 0;
-}
-
-/*# sourceMappingURL=/style.97fcb138.css.map */

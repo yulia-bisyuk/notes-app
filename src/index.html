@@ -8,12 +8,25 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="style.scss" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <h1>A JavaScript project!!!</h1>
-    <div id="app"></div>
+    <table class="main-table">
+      <thead class="table-head">
+        <tr class="table-head-item">
+          <th>Created</th>
+          <th>Category</th>
+          <th>Content</th>
+          <th>Dates</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody id="table-body"></tbody>
+    </table>
     <script src="main.js"></script>
+    <div id="app"></div>
   </body>
 </html>
