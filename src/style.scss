@@ -1,9 +1,5 @@
 @import './sass/main-table.scss';
-
-html {
-  line-height: 1.2;
-  -webkit-text-size-adjust: 100%;
-}
+@import './sass/modal.scss';
 
 html,
 * {
@@ -13,6 +9,7 @@ html,
 body {
   margin: 0;
 }
+
 table {
   border-spacing: 0;
 }

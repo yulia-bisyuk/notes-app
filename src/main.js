@@ -1,6 +1,8 @@
 'use strict';
 import './style.scss';
 import './js/populateTable';
+import './js/toggleModal';
+import './js/createNote';
 
 // function counter() {
 //   let seconds = 0;

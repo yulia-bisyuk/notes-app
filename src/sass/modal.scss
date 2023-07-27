@@ -1,0 +1,64 @@
+.hidden {
+  display: none;
+}
+//fixed top-0 left-0 right-0 z-50 bg-lightGreen w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] h-full
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  background-color: #e8eaf5bf;
+}
+
+.modal-wrap {
+  margin: 200px auto;
+  padding: 20px;
+  width: 100%;
+  max-width: 440px;
+  background-color: #fff;
+  border: 1px solid #777777;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 24px;
+  color: #777777;
+}
+
+.button-close {
+  border: none;
+  background-color: transparent;
+  &:hover {
+    background-color: #e8eaf5bf;
+  }
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #777777;
+}
+
+.form-input {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 6px 10px;
+}
+
+.select {
+}
+
+.text-area {
+  padding: 6px 0px;
+  max-width: 100%;
+  resize: none;
+}

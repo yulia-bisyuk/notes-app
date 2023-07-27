@@ -1,18 +1,27 @@
-.main-table {
+.wrapper {
+  width: fit-content;
   margin: 20px auto;
 }
+
+// .main-table {
+//   // margin: 20px auto;
+// }
 .table-head {
   background-color: #777777;
   color: white;
 }
 .table-head-item th {
   padding: 14px;
+  border-right: solid 0.5px white;
+  border-left: solid 0.5px white;
 }
 
 .table-body-item td {
   margin: 4px 0px;
   padding: 10px;
   border-bottom: 1px solid white;
+  border-right: solid 0.5px white;
+  border-left: solid 0.5px white;
   background-color: #e8eaf5;
 }
 .table-body-button {
@@ -35,4 +44,14 @@
 
 .category-icon {
   margin-right: 4px;
+}
+
+.create-button {
+  display: block;
+  margin-right: auto;
+  margin-top: 20px;
+  padding: 10px 14px;
+  border: 1px solid #777777;
+  background-color: #e8eaf5;
+  cursor: pointer;
 }

@@ -10,20 +10,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="/style.97fcb138.js"></script><link rel="stylesheet" href="/main.1f19ae8e.css"></head>
   <body>
-    <table class="main-table">
-      <thead class="table-head">
-        <tr class="table-head-item">
-          <th>Created</th>
-          <th>Category</th>
-          <th>Content</th>
-          <th>Dates</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
+    <div class="wrapper">
+      <!-- main table -->
+      <table>
+        <thead class="table-head">
+          <tr class="table-head-item">
+            <th>Created</th>
+            <th>Category</th>
+            <th>Content</th>
+            <th>Dates</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <button type="button" id="create" class="create-button">
+        Create note
+      </button>
+    </div>
 
-      <tbody id="table-body"></tbody>
-    </table>
+    <!-- modal -->
+    <div id="modal" class="modal hidden">
+      <div class="overlay" id="overlay">
+        <div class="modal-wrap">
+          <div class="modal-head">
+            <h1 class="modal-title">Create new note</h1>
+            <button type="button" class="button-close" id="close">
+              <svg width="30" height="30" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#777777">
+                <path d="M23.733 10.304l-1.504-1.504-5.963 5.963-5.963-5.963-1.504 1.504 5.963 5.963-5.963 5.963 1.504 1.504 5.963-5.963 5.963 5.963 1.504-1.504-5.963-5.963 5.963-5.963z"></path>
+              </svg>
+            </button>
+          </div>
+          <form id="create-form">
+            <label class="form-label" for="category">Choose a Category:</label>
+            <select class="form-input select" name="category" id="category">
+              <option value="">Category</option>
+              <option value="Task">Task</option>
+              <option value="Random Thought">Random Thought</option>
+              <option value="Idea">Idea</option>
+            </select>
+
+            <label class="form-label" for="note-content">Write your note below</label>
+            <textarea id="note-content" name="note-content" rows="10" class="form-input text-area" placeholder="What are your thought today?"></textarea>
+
+            <button type="submit" class="create-button" id="submit-button">
+              Create note
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
     <script src="/main.1f19ae8e.js"></script>
-    <div id="app"></div>
   </body>
 </html>

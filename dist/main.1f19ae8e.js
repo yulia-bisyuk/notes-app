@@ -180,7 +180,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.refs = void 0;
 var refs = {
-  tableBody: document.getElementById('table-body')
+  tableBody: document.getElementById('table-body'),
+  modal: document.getElementById('modal'),
+  createButton: document.getElementById('create'),
+  closeButton: document.getElementById('close'),
+  categoryInput: document.getElementById('category'),
+  contentInput: document.getElementById('note-content'),
+  submitButton: document.getElementById('submit-button'),
+  createForm: document.getElementById('create-form')
 };
 exports.refs = refs;
 },{}],"utils/index.js":[function(require,module,exports) {
@@ -192,8 +199,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.setDate = void 0;
 var setDate = function setDate() {
   var newDate = new Date();
-  console.log("newDate: ", newDate);
-  return newDate.toDateString().slice(0, 10).split('-').reverse().join('/');
+  // Wed Jul 26 2023 21:37:58 GMT+0300 (Eastern European Summer Time)
+  //.split('-').reverse().join('/');
+
+  //[str.slice(0, end + step), ',', str.slice(end + step)].join('');
+  var date = newDate.toDateString().slice(4, 10) + ',' + newDate.toDateString().slice(10, 15);
+  return date;
 };
 exports.setDate = setDate;
 },{}],"data/notes.js":[function(require,module,exports) {
@@ -211,36 +222,37 @@ var notes = [{
   content: 'Learn Node.js till 10/9/2023'
 }, {
   id: 2,
-  created: Date.now(),
+  created: (0, _utils.setDate)(),
   category: 'Random Thought',
   content: 'Learn as if you will live forever, live like you will die tomorrow.'
 }, {
   id: 3,
-  created: Date.now(),
+  created: (0, _utils.setDate)(),
   category: 'Idea',
   content: 'Make a cake for my best friend birthday party'
 }, {
   id: 4,
-  created: Date.now(),
+  created: (0, _utils.setDate)(),
   category: 'Task',
   content: 'Get signature Lady Gaga on her concert 30/8/2023'
 }, {
   id: 5,
-  created: Date.now(),
+  created: (0, _utils.setDate)(),
   category: 'Idea',
   content: 'Write web application using React.js + Node.js'
 }, {
   id: 6,
-  created: Date.now(),
+  created: (0, _utils.setDate)(),
   category: 'Random Thought',
   content: 'When you change your thoughts, remember to also change your world.'
 }, {
   id: 7,
-  created: Date.now(),
+  created: (0, _utils.setDate)(),
   category: 'Task',
   content: 'To buy a book about JavaScript '
 }];
 exports.notes = notes;
+console.log("notes: ", notes);
 },{"../utils":"utils/index.js"}],"js/templates.js":[function(require,module,exports) {
 "use strict";
 
@@ -266,25 +278,61 @@ exports.createCategoryIcon = createCategoryIcon;
 var _refs = require("./refs");
 var _notes = require("../data/notes");
 var _templates = require("./templates");
-{
-  /* <svg width='24' height='24'>
-  <use href='../icons/sprite.svg#icon-thinking'></use>
-  </svg>; */
-}
 var populateTable = function populateTable(content) {
   var rows = content.map(function (elem) {
     var dates = elem.content.includes('10/9/2023') ? '10/9/2023' : '';
-    return " <tr class=\"table-body-item\">\n    <td>".concat(elem.created, "</td>\n    <td>\n    <div class=\"flex-start\">\n    ").concat((0, _templates.createCategoryIcon)(elem.category), " <span>").concat(elem.category, "</span>\n    </div>\n    </td>\n    <td>").concat(elem.content, "</td>\n    <td>").concat(dates, "</td>\n    <td >\n    <div class=\"flex\">\n<button class=\"table-body-button\">\n<svg\nwidth='30'\nheight='30'\nviewBox='0 0 32 32'\nxmlns='http://www.w3.org/2000/svg'\nfill=\"none\"\n>\n<path d=\"M15 6.00019L18 9.00019M13 20.0002H21M5 16.0002L4 20.0002L8 19.0002L19.586 7.41419C19.9609 7.03913 20.1716 6.53051 20.1716 6.00019C20.1716 5.46986 19.9609 4.96124 19.586 4.58619L19.414 4.41419C19.0389 4.03924 18.5303 3.82861 18 3.82861C17.4697 3.82861 16.9611 4.03924 16.586 4.41419L5 16.0002Z\" stroke=\"#777777\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg>\n   </button>\n\n    <button class=\"table-body-button\">\n<svg\nwidth='30'\nheight='30'\nviewBox='0 0 32 32'\nxmlns='http://www.w3.org/2000/svg'\n>\n<path d=\"M20.54 5.23L19.15 3.55C18.88 3.21 18.47 3 18 3H6C5.53 3 5.12 3.21 4.84 3.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V6.5C21 6.02 20.83 5.57 20.54 5.23ZM6.24 5H17.76L18.57 5.97H5.44L6.24 5ZM5 19V8H19V19H5ZM13.45 10H10.55V13H8L12 17L16 13H13.45V10Z\" fill=\"#777777\"/>\n</svg>\n    </button class=\"table-body-button\">\n\n    <button class=\"table-body-button\">\n<svg\nwidth='30'\nheight='30'\nviewBox='0 0 32 32'\nxmlns='http://www.w3.org/2000/svg'\n>\n<path d=\"M7 4C7 3.46957 7.21071 2.96086 7.58579 2.58579C7.96086 2.21071 8.46957 2 9 2H15C15.5304 2 16.0391 2.21071 16.4142 2.58579C16.7893 2.96086 17 3.46957 17 4V6H21C21.2652 6 21.5196 6.10536 21.7071 6.29289C21.8946 6.48043 22 6.73478 22 7C22 7.26522 21.8946 7.51957 21.7071 7.70711C21.5196 7.89464 21.2652 8 21 8H19.931L19.064 20.142C19.0281 20.6466 18.8023 21.1188 18.4321 21.4636C18.0619 21.8083 17.5749 22 17.069 22H6.93C6.42414 22 5.93707 21.8083 5.56688 21.4636C5.1967 21.1188 4.97092 20.6466 4.935 20.142L4.07 8H3C2.73478 8 2.48043 7.89464 2.29289 7.70711C2.10536 7.51957 2 7.26522 2 7C2 6.73478 2.10536 6.48043 2.29289 6.29289C2.48043 6.10536 2.73478 6 3 6H7V4ZM9 6H15V4H9V6ZM6.074 8L6.931 20H17.07L17.927 8H6.074ZM10 10C10.2652 10 10.5196 10.1054 10.7071 10.2929C10.8946 10.4804 11 10.7348 11 11V17C11 17.2652 10.8946 17.5196 10.7071 17.7071C10.5196 17.8946 10.2652 18 10 18C9.73478 18 9.48043 17.8946 9.29289 17.7071C9.10536 17.5196 9 17.2652 9 17V11C9 10.7348 9.10536 10.4804 9.29289 10.2929C9.48043 10.1054 9.73478 10 10 10ZM14 10C14.2652 10 14.5196 10.1054 14.7071 10.2929C14.8946 10.4804 15 10.7348 15 11V17C15 17.2652 14.8946 17.5196 14.7071 17.7071C14.5196 17.8946 14.2652 18 14 18C13.7348 18 13.4804 17.8946 13.2929 17.7071C13.1054 17.5196 13 17.2652 13 17V11C13 10.7348 13.1054 10.4804 13.2929 10.2929C13.4804 10.1054 13.7348 10 14 10Z\" fill=\"#777777\"/>\n</svg>\n    </button>\n </div>\n</td>\n  </tr>");
+    return " <tr class=\"table-body-item\">\n    <td>".concat(elem.created, "</td>\n    <td>\n    <div class=\"flex-start\">\n    ").concat((0, _templates.createCategoryIcon)(elem.category), " <span>").concat(elem.category, "</span>\n    </div>\n    </td>\n    <td>").concat(elem.content, "</td>\n    <td>").concat(dates, "</td>\n    <td >\n    <div class=\"flex\">\n\n<button class=\"table-body-button\">\n<svg\nwidth='30'\nheight='30'\nviewBox='0 0 32 32'\nxmlns='http://www.w3.org/2000/svg'\nfill=\"none\"\n>\n<path d=\"M15 6.00019L18 9.00019M13 20.0002H21M5 16.0002L4 20.0002L8 19.0002L19.586 7.41419C19.9609 7.03913 20.1716 6.53051 20.1716 6.00019C20.1716 5.46986 19.9609 4.96124 19.586 4.58619L19.414 4.41419C19.0389 4.03924 18.5303 3.82861 18 3.82861C17.4697 3.82861 16.9611 4.03924 16.586 4.41419L5 16.0002Z\" stroke=\"#777777\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg>\n</button>\n\n<button class=\"table-body-button\">\n<svg\nwidth='30'\nheight='30'\nviewBox='0 0 32 32'\nxmlns='http://www.w3.org/2000/svg'\n>\n<path d=\"M20.54 5.23L19.15 3.55C18.88 3.21 18.47 3 18 3H6C5.53 3 5.12 3.21 4.84 3.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V6.5C21 6.02 20.83 5.57 20.54 5.23ZM6.24 5H17.76L18.57 5.97H5.44L6.24 5ZM5 19V8H19V19H5ZM13.45 10H10.55V13H8L12 17L16 13H13.45V10Z\" fill=\"#777777\"/>\n</svg>\n</button class=\"table-body-button\">\n\n<button class=\"table-body-button\">\n<svg\nwidth='30'\nheight='30'\nviewBox='0 0 32 32'\nxmlns='http://www.w3.org/2000/svg'\n>\n<path d=\"M7 4C7 3.46957 7.21071 2.96086 7.58579 2.58579C7.96086 2.21071 8.46957 2 9 2H15C15.5304 2 16.0391 2.21071 16.4142 2.58579C16.7893 2.96086 17 3.46957 17 4V6H21C21.2652 6 21.5196 6.10536 21.7071 6.29289C21.8946 6.48043 22 6.73478 22 7C22 7.26522 21.8946 7.51957 21.7071 7.70711C21.5196 7.89464 21.2652 8 21 8H19.931L19.064 20.142C19.0281 20.6466 18.8023 21.1188 18.4321 21.4636C18.0619 21.8083 17.5749 22 17.069 22H6.93C6.42414 22 5.93707 21.8083 5.56688 21.4636C5.1967 21.1188 4.97092 20.6466 4.935 20.142L4.07 8H3C2.73478 8 2.48043 7.89464 2.29289 7.70711C2.10536 7.51957 2 7.26522 2 7C2 6.73478 2.10536 6.48043 2.29289 6.29289C2.48043 6.10536 2.73478 6 3 6H7V4ZM9 6H15V4H9V6ZM6.074 8L6.931 20H17.07L17.927 8H6.074ZM10 10C10.2652 10 10.5196 10.1054 10.7071 10.2929C10.8946 10.4804 11 10.7348 11 11V17C11 17.2652 10.8946 17.5196 10.7071 17.7071C10.5196 17.8946 10.2652 18 10 18C9.73478 18 9.48043 17.8946 9.29289 17.7071C9.10536 17.5196 9 17.2652 9 17V11C9 10.7348 9.10536 10.4804 9.29289 10.2929C9.48043 10.1054 9.73478 10 10 10ZM14 10C14.2652 10 14.5196 10.1054 14.7071 10.2929C14.8946 10.4804 15 10.7348 15 11V17C15 17.2652 14.8946 17.5196 14.7071 17.7071C14.5196 17.8946 14.2652 18 14 18C13.7348 18 13.4804 17.8946 13.2929 17.7071C13.1054 17.5196 13 17.2652 13 17V11C13 10.7348 13.1054 10.4804 13.2929 10.2929C13.4804 10.1054 13.7348 10 14 10Z\" fill=\"#777777\"/>\n</svg>\n</button>\n\n </div>\n</td>\n  </tr>");
   }).join('');
   _refs.refs.tableBody.insertAdjacentHTML('beforeend', rows);
 };
 populateTable(_notes.notes);
-},{"./refs":"js/refs.js","../data/notes":"data/notes.js","./templates":"js/templates.js"}],"main.js":[function(require,module,exports) {
+},{"./refs":"js/refs.js","../data/notes":"data/notes.js","./templates":"js/templates.js"}],"js/toggleModal.js":[function(require,module,exports) {
+"use strict";
+
+var _refs = require("./refs");
+_refs.refs.createButton.addEventListener('click', function () {
+  _refs.refs.modal.classList.remove('hidden');
+});
+_refs.refs.closeButton.addEventListener('click', function () {
+  _refs.refs.modal.classList.add('hidden');
+});
+},{"./refs":"js/refs.js"}],"js/createNote.js":[function(require,module,exports) {
+"use strict";
+
+var _refs = require("./refs");
+var _notes = require("../data/notes");
+var _utils = require("../utils");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+_refs.refs.createForm.addEventListener('submit', onFormSubmit);
+function onFormSubmit(e) {
+  e.preventDefault();
+  var newNote = {
+    id: Math.floor(Math.random() * 100),
+    created: (0, _utils.setDate)(),
+    category: _refs.refs.categoryInput.value,
+    content: _refs.refs.contentInput.value
+  };
+  var updatedNotes = [].concat(_toConsumableArray(_notes.notes), [newNote]);
+  //   notes = updatedNotes;
+  console.log("updatedNotes: ", updatedNotes);
+  //   return notes;
+  return updatedNotes;
+
+  //   console.log(`  refs.contentInput.value: `, refs.contentInput.value);
+}
+},{"./refs":"js/refs.js","../data/notes":"data/notes.js","../utils":"utils/index.js"}],"main.js":[function(require,module,exports) {
 'use strict';
 
 require("./style.scss");
 require("./js/populateTable");
-},{"./style.scss":"style.scss","./js/populateTable":"js/populateTable.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+require("./js/toggleModal");
+require("./js/createNote");
+},{"./style.scss":"style.scss","./js/populateTable":"js/populateTable.js","./js/toggleModal":"js/toggleModal.js","./js/createNote":"js/createNote.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -309,7 +357,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63377" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59786" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
