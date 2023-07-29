@@ -10,4 +10,5 @@ export const refs = {
   contentInput: document.getElementById('note-content'),
   createForm: document.getElementById('create-form'),
   editButton: document.getElementsByName('edit-button'),
+  errorMessage: document.querySelector('.error-message'),
 };

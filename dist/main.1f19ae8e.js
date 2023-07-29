@@ -190,7 +190,8 @@ var refs = {
   categoryInput: document.getElementById('category'),
   contentInput: document.getElementById('note-content'),
   createForm: document.getElementById('create-form'),
-  editButton: document.getElementsByName('edit-button')
+  editButton: document.getElementsByName('edit-button'),
+  errorMessage: document.querySelector('.error-message')
 };
 exports.refs = refs;
 },{}],"data/notes.js":[function(require,module,exports) {
@@ -275,7 +276,7 @@ var _notes = require("../data/notes");
 var _utils = require("../utils");
 var _actions = require("./actions");
 var populateTable = function populateTable() {
-  // remove old notes before render new ???
+  // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach(function (tr) {
     return tr.remove();
   });
@@ -283,8 +284,8 @@ var populateTable = function populateTable() {
     var dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
     var template = _refs.refs.rowTemplate.content.cloneNode(true);
     template.querySelector('.created').textContent = note.created;
-    template.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(note.category));
-    template.querySelector('.category-name').textContent = note.category;
+    template.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(note.category) || '');
+    template.querySelector('.category-name').textContent = note.category || '';
     template.querySelector('.content').textContent = note.content;
     template.querySelector('.dates').textContent = dates;
     var deleteBtn = template.querySelector('.delete-button');
@@ -323,6 +324,10 @@ var isEdit = false;
 var updateId;
 var createNote = function createNote(e, notes) {
   e.preventDefault();
+  if (!_refs.refs.contentInput.value.trim()) {
+    _refs.refs.errorMessage.innerText = '*Please enter text of your note';
+    return;
+  }
   var noteDetails = {
     created: (0, _utils.setDate)(),
     category: _refs.refs.categoryInput.value.trim(),
@@ -361,7 +366,6 @@ var editNote = function editNote(note) {
   _refs.refs.modalSubmitButton.innerText = 'Edit';
   _refs.refs.categoryInput.value = note.category;
   _refs.refs.contentInput.value = note.content;
-  console.log("note in edit: ", note);
 };
 exports.editNote = editNote;
 },{"./refs":"js/refs.js","./populateTable":"js/populateTable.js","../utils":"utils/index.js"}],"js/toggleModal.js":[function(require,module,exports) {
@@ -372,6 +376,7 @@ _refs.refs.createButton.addEventListener('click', function () {
   _refs.refs.modal.classList.remove('hidden');
   _refs.refs.modalTitle.innerText = 'Create New Note';
   _refs.refs.modalSubmitButton.innerText = 'Create';
+  _refs.refs.errorMessage.innerText = '';
 });
 _refs.refs.closeButton.addEventListener('click', function () {
   _refs.refs.modal.classList.add('hidden');
@@ -408,7 +413,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52793" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53391" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

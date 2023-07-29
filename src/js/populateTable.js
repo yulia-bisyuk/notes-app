@@ -4,7 +4,7 @@ import { createCategoryIcon } from '../utils';
 import { createNote, deleteNote, editNote } from './actions';
 
 export const populateTable = () => {
-  // remove old notes before render new ???
+  // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach((tr) => tr.remove());
   return notes.map((note, index) => {
     const dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
@@ -13,8 +13,11 @@ export const populateTable = () => {
     template.querySelector('.created').textContent = note.created;
     template
       .querySelector('.category-icon')
-      .insertAdjacentHTML('afterbegin', createCategoryIcon(note.category));
-    template.querySelector('.category-name').textContent = note.category;
+      .insertAdjacentHTML(
+        'afterbegin',
+        createCategoryIcon(note.category) || ''
+      );
+    template.querySelector('.category-name').textContent = note.category || '';
     template.querySelector('.content').textContent = note.content;
     template.querySelector('.dates').textContent = dates;
 

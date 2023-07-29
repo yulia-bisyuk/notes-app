@@ -7,6 +7,13 @@ let updateId;
 
 export const createNote = (e, notes) => {
   e.preventDefault();
+
+  if (!refs.contentInput.value.trim()) {
+    refs.errorMessage.innerText = '*Please enter text of your note';
+
+    return;
+  }
+
   const noteDetails = {
     created: setDate(),
     category: refs.categoryInput.value.trim(),
@@ -49,6 +56,4 @@ export const editNote = (note) => {
 
   refs.categoryInput.value = note.category;
   refs.contentInput.value = note.content;
-
-  console.log(`note in edit: `, note);
 };
