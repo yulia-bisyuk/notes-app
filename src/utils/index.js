@@ -7,6 +7,23 @@ export const setDate = () => {
   return date;
 };
 
+export const formatDate = (start, end) => {
+  if (!start && !end) return;
+
+  const dateReverse = (date) => {
+    const dateParts = date.split('-');
+    return dateParts[2] + '/' + dateParts[1] + '/' + dateParts[0];
+  };
+
+  if (!start) {
+    return dateReverse(end);
+  } else if (!end) {
+    return dateReverse(start);
+  } else {
+    return `${dateReverse(start)}, ${dateReverse(end)}`;
+  }
+};
+
 export const createCategoryIcon = (category) => {
   if (category === 'Task') {
     return `<svg

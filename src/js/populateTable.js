@@ -7,7 +7,7 @@ export const populateTable = () => {
   // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach((tr) => tr.remove());
   return notes.map((note, index) => {
-    const dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
+    // const dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
     let template = refs.rowTemplate.content.cloneNode(true);
 
     template.querySelector('.created').textContent = note.created;
@@ -19,7 +19,7 @@ export const populateTable = () => {
       );
     template.querySelector('.category-name').textContent = note.category || '';
     template.querySelector('.content').textContent = note.content;
-    template.querySelector('.dates').textContent = dates;
+    template.querySelector('.dates').textContent = note.dates;
 
     const deleteBtn = template.querySelector('.delete-button');
     deleteBtn.addEventListener('click', () => deleteNote(notes, index));

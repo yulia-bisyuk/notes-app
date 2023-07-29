@@ -25,7 +25,8 @@
   border: 1px solid #777777;
 }
 
-.modal-head {
+.modal-head,
+.note-dates {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -79,3 +80,7 @@
   font-size: 12px;
   color: #ff5733;
 }
+
+// .note-dates {
+//   display: flex;
+// }

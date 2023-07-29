@@ -191,7 +191,9 @@ var refs = {
   contentInput: document.getElementById('note-content'),
   createForm: document.getElementById('create-form'),
   editButton: document.getElementsByName('edit-button'),
-  errorMessage: document.querySelector('.error-message')
+  errorMessage: document.querySelector('.error-message'),
+  startDate: document.getElementById('start'),
+  endDate: document.getElementById('end')
 };
 exports.refs = refs;
 },{}],"data/notes.js":[function(require,module,exports) {
@@ -205,37 +207,44 @@ var notes = [{
   id: 1,
   created: 'Jul 08, 2023',
   category: 'Task',
-  content: 'Learn Node.js till 10/9/2023'
+  content: 'Learn Node.js till 10/09/2023',
+  dates: '10/09/2023'
 }, {
   id: 2,
   created: 'Jul 20, 2023',
   category: 'Random Thought',
-  content: 'Learn as if you will live forever, live like you will die tomorrow.'
+  content: 'Learn as if you will live forever, live like you will die tomorrow.',
+  dates: ''
 }, {
   id: 3,
   created: 'Jul 21, 2023',
   category: 'Idea',
-  content: 'Make a cake for my best friend birthday party'
+  content: 'Make a cake for my best friend birthday party',
+  dates: ''
 }, {
   id: 4,
   created: 'Jul 21, 2023',
   category: 'Task',
-  content: 'Get signature Lady Gaga on her concert 30/8/2023'
+  content: 'Get signature of Lady Gaga on her concerts 30/08/2023 and 01/09/2023',
+  dates: '30/08/2023, 01/09/2023'
 }, {
   id: 5,
   created: 'Jul 23, 2023',
   category: 'Idea',
-  content: 'Write web application using React.js + Node.js'
+  content: 'Write web application using React.js + Node.js',
+  dates: ''
 }, {
   id: 6,
   created: 'Jul 24, 2023',
   category: 'Random Thought',
-  content: 'When you change your thoughts, remember to also change your world.'
+  content: 'When you change your thoughts, remember to also change your world.',
+  dates: ''
 }, {
   id: 7,
   created: 'Jul 26, 2023',
   category: 'Task',
-  content: 'To buy a book about JavaScript '
+  content: 'To buy a book about JavaScript ',
+  dates: ''
 }];
 exports.notes = notes;
 console.log("notes: ", notes);
@@ -245,13 +254,28 @@ console.log("notes: ", notes);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setDate = exports.createCategoryIcon = void 0;
+exports.setDate = exports.formatDate = exports.createCategoryIcon = void 0;
 var setDate = function setDate() {
   var newDate = new Date();
   var date = newDate.toDateString().slice(4, 10) + ',' + newDate.toDateString().slice(10, 15);
   return date;
 };
 exports.setDate = setDate;
+var formatDate = function formatDate(start, end) {
+  if (!start && !end) return;
+  var dateReverse = function dateReverse(date) {
+    var dateParts = date.split('-');
+    return dateParts[2] + '/' + dateParts[1] + '/' + dateParts[0];
+  };
+  if (!start) {
+    return dateReverse(end);
+  } else if (!end) {
+    return dateReverse(start);
+  } else {
+    return "".concat(dateReverse(start), ", ").concat(dateReverse(end));
+  }
+};
+exports.formatDate = formatDate;
 var createCategoryIcon = function createCategoryIcon(category) {
   if (category === 'Task') {
     return "<svg\n        class='category-icon'\n        width='30'\n        height='30'\n        viewBox='0 0 32 32'\n        xmlns='http://www.w3.org/2000/svg'\n        fill='none'\n      >\n        <path\n          fill='none'\n          stroke='#777'\n          style='stroke: var(--color1, #777)'\n          stroke-linejoin='round'\n          stroke-linecap='round'\n          stroke-miterlimit='4'\n          stroke-width='2'\n          d='M12 8h14.667M5.067 7.733l1.067 1.067 2.667-2.667M5.067 15.733l1.067 1.067 2.667-2.667M5.067 23.733l1.067 1.067 2.667-2.667M12 16h14.667M12 24h14.667'\n        ></path>\n      </svg>";
@@ -281,13 +305,13 @@ var populateTable = function populateTable() {
     return tr.remove();
   });
   return _notes.notes.map(function (note, index) {
-    var dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
+    // const dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
     var template = _refs.refs.rowTemplate.content.cloneNode(true);
     template.querySelector('.created').textContent = note.created;
     template.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(note.category) || '');
     template.querySelector('.category-name').textContent = note.category || '';
     template.querySelector('.content').textContent = note.content;
-    template.querySelector('.dates').textContent = dates;
+    template.querySelector('.dates').textContent = note.dates;
     var deleteBtn = template.querySelector('.delete-button');
     deleteBtn.addEventListener('click', function () {
       return (0, _actions.deleteNote)(_notes.notes, index);
@@ -324,6 +348,7 @@ var isEdit = false;
 var updateId;
 var createNote = function createNote(e, notes) {
   e.preventDefault();
+  var dates = (0, _utils.formatDate)(_refs.refs.startDate.value, _refs.refs.endDate.value);
   if (!_refs.refs.contentInput.value.trim()) {
     _refs.refs.errorMessage.innerText = '*Please enter text of your note';
     return;
@@ -331,7 +356,8 @@ var createNote = function createNote(e, notes) {
   var noteDetails = {
     created: (0, _utils.setDate)(),
     category: _refs.refs.categoryInput.value.trim(),
-    content: _refs.refs.contentInput.value.trim()
+    content: _refs.refs.contentInput.value.trim(),
+    dates: dates
   };
   if (isEdit) {
     var noteToUpdate = notes.find(function (note) {
@@ -342,6 +368,7 @@ var createNote = function createNote(e, notes) {
       id: noteToUpdate.id
     }, noteDetails);
     notes[noteToUpdateIdx] = updatedNote;
+    isEdit = false;
   } else {
     var newNote = _objectSpread({
       id: Math.floor(Math.random() * 100)
@@ -413,7 +440,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53391" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61617" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

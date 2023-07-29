@@ -1,6 +1,6 @@
 import { refs } from './refs';
 import { populateTable } from './populateTable';
-import { setDate } from '../utils';
+import { setDate, formatDate } from '../utils';
 
 let isEdit = false;
 let updateId;
@@ -8,9 +8,10 @@ let updateId;
 export const createNote = (e, notes) => {
   e.preventDefault();
 
+  const dates = formatDate(refs.startDate.value, refs.endDate.value);
+
   if (!refs.contentInput.value.trim()) {
     refs.errorMessage.innerText = '*Please enter text of your note';
-
     return;
   }
 
@@ -18,6 +19,7 @@ export const createNote = (e, notes) => {
     created: setDate(),
     category: refs.categoryInput.value.trim(),
     content: refs.contentInput.value.trim(),
+    dates,
   };
 
   if (isEdit) {
@@ -29,6 +31,7 @@ export const createNote = (e, notes) => {
       ...noteDetails,
     };
     notes[noteToUpdateIdx] = updatedNote;
+    isEdit = false;
   } else {
     const newNote = {
       id: Math.floor(Math.random() * 100),

@@ -11,4 +11,6 @@ export const refs = {
   createForm: document.getElementById('create-form'),
   editButton: document.getElementsByName('edit-button'),
   errorMessage: document.querySelector('.error-message'),
+  startDate: document.getElementById('start'),
+  endDate: document.getElementById('end'),
 };
