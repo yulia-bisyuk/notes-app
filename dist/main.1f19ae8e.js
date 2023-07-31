@@ -181,19 +181,22 @@ Object.defineProperty(exports, "__esModule", {
 exports.refs = void 0;
 var refs = {
   tableBody: document.getElementById('table-body'),
+  summaryTableBody: document.getElementById('summary-table-body'),
   rowTemplate: document.getElementById('table-item'),
+  summaryRowTemplate: document.getElementById('summary-table-item'),
   modal: document.getElementById('modal'),
   modalTitle: document.querySelector('.modal-title'),
   modalSubmitButton: document.getElementById('submit-button'),
   createButton: document.getElementById('create'),
+  // editButton: document.getElementsByName('edit-button'),
+  // archiveButton: document.getElementById('archive'),
   closeButton: document.getElementById('close'),
+  createForm: document.getElementById('create-form'),
   categoryInput: document.getElementById('category'),
   contentInput: document.getElementById('note-content'),
-  createForm: document.getElementById('create-form'),
-  editButton: document.getElementsByName('edit-button'),
-  errorMessage: document.querySelector('.error-message'),
   startDate: document.getElementById('start'),
-  endDate: document.getElementById('end')
+  endDate: document.getElementById('end'),
+  errorMessage: document.querySelector('.error-message')
 };
 exports.refs = refs;
 },{}],"data/notes.js":[function(require,module,exports) {
@@ -208,46 +211,52 @@ var notes = [{
   created: 'Jul 08, 2023',
   category: 'Task',
   content: 'Learn Node.js till 10/09/2023',
-  dates: '10/09/2023'
+  dates: '10/09/2023',
+  archived: true
 }, {
   id: 2,
   created: 'Jul 20, 2023',
   category: 'Random Thought',
   content: 'Learn as if you will live forever, live like you will die tomorrow.',
-  dates: ''
+  dates: '',
+  archived: false
 }, {
   id: 3,
   created: 'Jul 21, 2023',
   category: 'Idea',
   content: 'Make a cake for my best friend birthday party',
-  dates: ''
+  dates: '',
+  archived: false
 }, {
   id: 4,
   created: 'Jul 21, 2023',
   category: 'Task',
   content: 'Get signature of Lady Gaga on her concerts 30/08/2023 and 01/09/2023',
-  dates: '30/08/2023, 01/09/2023'
+  dates: '30/08/2023, 01/09/2023',
+  archived: true
 }, {
   id: 5,
   created: 'Jul 23, 2023',
   category: 'Idea',
   content: 'Write web application using React.js + Node.js',
-  dates: ''
+  dates: '',
+  archived: false
 }, {
   id: 6,
   created: 'Jul 24, 2023',
   category: 'Random Thought',
   content: 'When you change your thoughts, remember to also change your world.',
-  dates: ''
+  dates: '',
+  archived: false
 }, {
   id: 7,
   created: 'Jul 26, 2023',
   category: 'Task',
   content: 'To buy a book about JavaScript ',
-  dates: ''
+  dates: '',
+  archived: false
 }];
 exports.notes = notes;
-console.log("notes: ", notes);
 },{}],"utils/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -288,24 +297,56 @@ var createCategoryIcon = function createCategoryIcon(category) {
   }
 };
 exports.createCategoryIcon = createCategoryIcon;
-},{}],"js/populateTable.js":[function(require,module,exports) {
+},{}],"js/populateTables.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.populateTable = void 0;
+exports.populateSummaryTable = exports.populateMainTable = void 0;
 var _refs = require("./refs");
 var _notes = require("../data/notes");
 var _utils = require("../utils");
 var _actions = require("./actions");
-var populateTable = function populateTable() {
+var getActive = function getActive(notes) {
+  return notes = notes.filter(function (note) {
+    return !note.archived;
+  });
+};
+// const getArchived = (notes) => notes.filter((note) => note.archived);
+var getSummary = function getSummary(notes) {
+  var result = notes.reduce(function (acc, note) {
+    var foundCategory = acc.find(function (item) {
+      return item.category === note.category;
+    });
+    if (!foundCategory) {
+      acc.push({
+        category: note.category,
+        active: 0,
+        archived: 0
+      });
+    }
+    var index = acc.findIndex(function (item) {
+      return item.category === note.category;
+    });
+    note.archived ? acc[index].archived += 1 : acc[index].active += 1;
+    return acc;
+  }, []);
+  return result;
+};
+
+// const archivedNotes = getArchived(notes);
+// console.log(`activeNotes: `, activeNotes);
+// console.log(`archivedNotes: `, archivedNotes);
+
+var populateMainTable = function populateMainTable() {
+  var activeNotes = getActive(_notes.notes);
+  console.log("activeNotes: ", activeNotes);
   // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach(function (tr) {
     return tr.remove();
   });
-  return _notes.notes.map(function (note, index) {
-    // const dates = note.content.includes('10/9/2023') ? '10/9/2023' : '';
+  return activeNotes.map(function (note, index) {
     var template = _refs.refs.rowTemplate.content.cloneNode(true);
     template.querySelector('.created').textContent = note.created;
     template.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(note.category) || '');
@@ -314,29 +355,50 @@ var populateTable = function populateTable() {
     template.querySelector('.dates').textContent = note.dates;
     var deleteBtn = template.querySelector('.delete-button');
     deleteBtn.addEventListener('click', function () {
-      return (0, _actions.deleteNote)(_notes.notes, index);
+      return (0, _actions.deleteNote)(_notes.notes, note.id);
     });
     var editBtn = template.querySelector('.edit-button');
     editBtn.addEventListener('click', function () {
       return (0, _actions.editNote)(note);
     });
+    var archiveBtn = template.querySelector('.archive-button');
+    archiveBtn.addEventListener('click', function () {
+      return (0, _actions.toggleStatus)(_notes.notes, note.id);
+    });
     _refs.refs.tableBody.appendChild(template);
   });
 };
-exports.populateTable = populateTable;
+exports.populateMainTable = populateMainTable;
+var populateSummaryTable = function populateSummaryTable() {
+  // document
+  //   .querySelectorAll('.summary-table-body-item')
+  //   .forEach((tr) => tr.remove());
+  var statistics = getSummary(_notes.notes);
+  return statistics.map(function (item) {
+    var summaryTemplate = _refs.refs.summaryRowTemplate.content.cloneNode(true);
+    summaryTemplate.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(item.category) || '');
+    summaryTemplate.querySelector('.category-name').textContent = item.category || '';
+    summaryTemplate.querySelector('.active').textContent = item.active;
+    summaryTemplate.querySelector('.archived').textContent = item.archived;
+    item.archived !== 0 ? summaryTemplate.querySelector('.archived').classList.add('archived-bold') : '';
+    _refs.refs.summaryTableBody.appendChild(summaryTemplate);
+  });
+};
+exports.populateSummaryTable = populateSummaryTable;
 _refs.refs.createForm.addEventListener('submit', function (e) {
   return (0, _actions.createNote)(e, _notes.notes);
 });
-populateTable();
+populateMainTable();
+populateSummaryTable();
 },{"./refs":"js/refs.js","../data/notes":"data/notes.js","../utils":"utils/index.js","./actions":"js/actions.js"}],"js/actions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.editNote = exports.deleteNote = exports.createNote = void 0;
+exports.toggleStatus = exports.editNote = exports.deleteNote = exports.createNote = void 0;
 var _refs = require("./refs");
-var _populateTable = require("./populateTable");
+var _populateTables = require("./populateTables");
 var _utils = require("../utils");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -357,7 +419,8 @@ var createNote = function createNote(e, notes) {
     created: (0, _utils.setDate)(),
     category: _refs.refs.categoryInput.value.trim(),
     content: _refs.refs.contentInput.value.trim(),
-    dates: dates
+    dates: dates,
+    archived: false
   };
   if (isEdit) {
     var noteToUpdate = notes.find(function (note) {
@@ -377,12 +440,18 @@ var createNote = function createNote(e, notes) {
   }
   _refs.refs.createForm.reset();
   _refs.refs.closeButton.click();
-  (0, _populateTable.populateTable)();
+  (0, _populateTables.populateMainTable)();
+  (0, _populateTables.populateSummaryTable)();
 };
 exports.createNote = createNote;
-var deleteNote = function deleteNote(notes, index) {
+var deleteNote = function deleteNote(notes, id) {
+  console.log("index: ", index);
+  var index = notes.indexOf(function (note) {
+    return note.id === id;
+  });
   notes.splice(index, 1);
-  (0, _populateTable.populateTable)();
+  (0, _populateTables.populateMainTable)();
+  (0, _populateTables.populateSummaryTable)();
 };
 exports.deleteNote = deleteNote;
 var editNote = function editNote(note) {
@@ -395,7 +464,16 @@ var editNote = function editNote(note) {
   _refs.refs.contentInput.value = note.content;
 };
 exports.editNote = editNote;
-},{"./refs":"js/refs.js","./populateTable":"js/populateTable.js","../utils":"utils/index.js"}],"js/toggleModal.js":[function(require,module,exports) {
+var toggleStatus = function toggleStatus(notes, id) {
+  var noteToUpdate = notes.find(function (note) {
+    return note.id === id;
+  });
+  noteToUpdate.archived = !noteToUpdate.archived;
+  (0, _populateTables.populateMainTable)();
+  (0, _populateTables.populateSummaryTable)();
+};
+exports.toggleStatus = toggleStatus;
+},{"./refs":"js/refs.js","./populateTables":"js/populateTables.js","../utils":"utils/index.js"}],"js/toggleModal.js":[function(require,module,exports) {
 "use strict";
 
 var _refs = require("./refs");
@@ -413,9 +491,9 @@ _refs.refs.closeButton.addEventListener('click', function () {
 
 require("./style.scss");
 require("./js/actions");
-require("./js/populateTable");
+require("./js/populateTables");
 require("./js/toggleModal");
-},{"./style.scss":"style.scss","./js/actions":"js/actions.js","./js/populateTable":"js/populateTable.js","./js/toggleModal":"js/toggleModal.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./style.scss":"style.scss","./js/actions":"js/actions.js","./js/populateTables":"js/populateTables.js","./js/toggleModal":"js/toggleModal.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -440,7 +518,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61617" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61585" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

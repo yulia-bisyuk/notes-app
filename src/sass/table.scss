@@ -55,3 +55,15 @@
   background-color: #e8eaf5;
   cursor: pointer;
 }
+
+.active,
+.archived {
+  text-align: center;
+}
+
+.archived-bold {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}

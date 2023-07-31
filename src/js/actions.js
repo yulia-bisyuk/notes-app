@@ -1,5 +1,5 @@
 import { refs } from './refs';
-import { populateTable } from './populateTable';
+import { populateMainTable, populateSummaryTable } from './populateTables';
 import { setDate, formatDate } from '../utils';
 
 let isEdit = false;
@@ -20,6 +20,7 @@ export const createNote = (e, notes) => {
     category: refs.categoryInput.value.trim(),
     content: refs.contentInput.value.trim(),
     dates,
+    archived: false,
   };
 
   if (isEdit) {
@@ -42,12 +43,16 @@ export const createNote = (e, notes) => {
 
   refs.createForm.reset();
   refs.closeButton.click();
-  populateTable();
+  populateMainTable();
+  populateSummaryTable();
 };
 
-export const deleteNote = (notes, index) => {
+export const deleteNote = (notes, id) => {
+  console.log(`index: `, index);
+  const index = notes.indexOf((note) => note.id === id);
   notes.splice(index, 1);
-  populateTable();
+  populateMainTable();
+  populateSummaryTable();
 };
 
 export const editNote = (note) => {
@@ -59,4 +64,13 @@ export const editNote = (note) => {
 
   refs.categoryInput.value = note.category;
   refs.contentInput.value = note.content;
+};
+
+export const toggleStatus = (notes, id) => {
+  let noteToUpdate = notes.find((note) => note.id === id);
+
+  noteToUpdate.archived = !noteToUpdate.archived;
+
+  populateMainTable();
+  populateSummaryTable();
 };
