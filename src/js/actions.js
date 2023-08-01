@@ -47,8 +47,8 @@ export const createNote = (e, notes) => {
   populateSummaryTable();
 };
 
-export const deleteNote = (notes, id) => {
-  const index = notes.indexOf((note) => note.id === id);
+export const deleteNote = (notes, index) => {
+  // const index = notes.indexOf((note) => note.id === id);
   notes.splice(index, 1);
   populateMainTable();
   populateSummaryTable();

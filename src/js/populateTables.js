@@ -28,7 +28,7 @@ export const populateMainTable = () => {
   // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach((tr) => tr.remove());
 
-  return activeNotes.map((note) => {
+  return activeNotes.map((note, index) => {
     let template = refs.rowTemplate.content.cloneNode(true);
 
     template.querySelector('.created').textContent = note.created;
@@ -43,7 +43,7 @@ export const populateMainTable = () => {
     template.querySelector('.dates').textContent = note.dates;
 
     const deleteBtn = template.querySelector('.delete-button');
-    deleteBtn.addEventListener('click', () => deleteNote(notes, note.id));
+    deleteBtn.addEventListener('click', () => deleteNote(notes, index));
 
     const editBtn = template.querySelector('.edit-button');
     editBtn.addEventListener('click', () => editNote(note));
