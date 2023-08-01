@@ -1,18 +1,9 @@
 import { refs } from './refs';
 import { notes } from '../data/notes';
 import { createCategoryIcon } from '../utils';
-import {
-  createNote,
-  deleteNote,
-  editNote,
-  toggleStatus,
-  // getSummary,
-  // getActive,
-  // getArchived,
-} from './actions';
+import { createNote, deleteNote, editNote, setArchived } from './actions';
 
 const getActive = (notes) => (notes = notes.filter((note) => !note.archived));
-// const getArchived = (notes) => notes.filter((note) => note.archived);
 const getSummary = (notes) => {
   const result = notes.reduce((acc, note) => {
     const foundCategory = acc.find((item) => item.category === note.category);
@@ -32,17 +23,12 @@ const getSummary = (notes) => {
   return result;
 };
 
-// const archivedNotes = getArchived(notes);
-// console.log(`activeNotes: `, activeNotes);
-// console.log(`archivedNotes: `, archivedNotes);
-
 export const populateMainTable = () => {
   const activeNotes = getActive(notes);
-  console.log(`activeNotes: `, activeNotes);
   // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach((tr) => tr.remove());
 
-  return activeNotes.map((note, index) => {
+  return activeNotes.map((note) => {
     let template = refs.rowTemplate.content.cloneNode(true);
 
     template.querySelector('.created').textContent = note.created;
@@ -63,16 +49,13 @@ export const populateMainTable = () => {
     editBtn.addEventListener('click', () => editNote(note));
 
     const archiveBtn = template.querySelector('.archive-button');
-    archiveBtn.addEventListener('click', () => toggleStatus(notes, note.id));
+    archiveBtn.addEventListener('click', () => setArchived(notes, note.id));
 
     refs.tableBody.appendChild(template);
   });
 };
 
 export const populateSummaryTable = () => {
-  // document
-  //   .querySelectorAll('.summary-table-body-item')
-  //   .forEach((tr) => tr.remove());
   const statistics = getSummary(notes);
 
   return statistics.map((item) => {
@@ -89,11 +72,6 @@ export const populateSummaryTable = () => {
 
     summaryTemplate.querySelector('.active').textContent = item.active;
     summaryTemplate.querySelector('.archived').textContent = item.archived;
-    item.archived !== 0
-      ? summaryTemplate
-          .querySelector('.archived')
-          .classList.add('archived-bold')
-      : '';
 
     refs.summaryTableBody.appendChild(summaryTemplate);
   });

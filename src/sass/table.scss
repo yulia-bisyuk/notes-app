@@ -3,6 +3,11 @@
   margin: 20px auto;
 }
 
+.wrapper h1 {
+  font-size: 20px;
+  text-align: center;
+}
+
 .table-head {
   background-color: #777777;
   color: white;
@@ -48,8 +53,7 @@
 
 .create-button {
   display: block;
-  margin-right: auto;
-  margin-top: 20px;
+  margin: 20px auto;
   padding: 10px 14px;
   border: 1px solid #777777;
   background-color: #e8eaf5;
@@ -61,7 +65,7 @@
   text-align: center;
 }
 
-.archived-bold {
+.bold {
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;

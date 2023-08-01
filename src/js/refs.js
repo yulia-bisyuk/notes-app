@@ -10,8 +10,6 @@ export const refs = {
   modalSubmitButton: document.getElementById('submit-button'),
 
   createButton: document.getElementById('create'),
-  // editButton: document.getElementsByName('edit-button'),
-  // archiveButton: document.getElementById('archive'),
   closeButton: document.getElementById('close'),
 
   createForm: document.getElementById('create-form'),

@@ -188,8 +188,6 @@ var refs = {
   modalTitle: document.querySelector('.modal-title'),
   modalSubmitButton: document.getElementById('submit-button'),
   createButton: document.getElementById('create'),
-  // editButton: document.getElementsByName('edit-button'),
-  // archiveButton: document.getElementById('archive'),
   closeButton: document.getElementById('close'),
   createForm: document.getElementById('create-form'),
   categoryInput: document.getElementById('category'),
@@ -313,7 +311,6 @@ var getActive = function getActive(notes) {
     return !note.archived;
   });
 };
-// const getArchived = (notes) => notes.filter((note) => note.archived);
 var getSummary = function getSummary(notes) {
   var result = notes.reduce(function (acc, note) {
     var foundCategory = acc.find(function (item) {
@@ -334,19 +331,13 @@ var getSummary = function getSummary(notes) {
   }, []);
   return result;
 };
-
-// const archivedNotes = getArchived(notes);
-// console.log(`activeNotes: `, activeNotes);
-// console.log(`archivedNotes: `, archivedNotes);
-
 var populateMainTable = function populateMainTable() {
   var activeNotes = getActive(_notes.notes);
-  console.log("activeNotes: ", activeNotes);
   // remove old notes before render new
   document.querySelectorAll('.table-body-item').forEach(function (tr) {
     return tr.remove();
   });
-  return activeNotes.map(function (note, index) {
+  return activeNotes.map(function (note) {
     var template = _refs.refs.rowTemplate.content.cloneNode(true);
     template.querySelector('.created').textContent = note.created;
     template.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(note.category) || '');
@@ -363,16 +354,13 @@ var populateMainTable = function populateMainTable() {
     });
     var archiveBtn = template.querySelector('.archive-button');
     archiveBtn.addEventListener('click', function () {
-      return (0, _actions.toggleStatus)(_notes.notes, note.id);
+      return (0, _actions.setArchived)(_notes.notes, note.id);
     });
     _refs.refs.tableBody.appendChild(template);
   });
 };
 exports.populateMainTable = populateMainTable;
 var populateSummaryTable = function populateSummaryTable() {
-  // document
-  //   .querySelectorAll('.summary-table-body-item')
-  //   .forEach((tr) => tr.remove());
   var statistics = getSummary(_notes.notes);
   return statistics.map(function (item) {
     var summaryTemplate = _refs.refs.summaryRowTemplate.content.cloneNode(true);
@@ -380,7 +368,6 @@ var populateSummaryTable = function populateSummaryTable() {
     summaryTemplate.querySelector('.category-name').textContent = item.category || '';
     summaryTemplate.querySelector('.active').textContent = item.active;
     summaryTemplate.querySelector('.archived').textContent = item.archived;
-    item.archived !== 0 ? summaryTemplate.querySelector('.archived').classList.add('archived-bold') : '';
     _refs.refs.summaryTableBody.appendChild(summaryTemplate);
   });
 };
@@ -396,7 +383,7 @@ populateSummaryTable();
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toggleStatus = exports.editNote = exports.deleteNote = exports.createNote = void 0;
+exports.setArchived = exports.editNote = exports.deleteNote = exports.createNote = void 0;
 var _refs = require("./refs");
 var _populateTables = require("./populateTables");
 var _utils = require("../utils");
@@ -445,7 +432,6 @@ var createNote = function createNote(e, notes) {
 };
 exports.createNote = createNote;
 var deleteNote = function deleteNote(notes, id) {
-  console.log("index: ", index);
   var index = notes.indexOf(function (note) {
     return note.id === id;
   });
@@ -464,15 +450,15 @@ var editNote = function editNote(note) {
   _refs.refs.contentInput.value = note.content;
 };
 exports.editNote = editNote;
-var toggleStatus = function toggleStatus(notes, id) {
+var setArchived = function setArchived(notes, id) {
   var noteToUpdate = notes.find(function (note) {
     return note.id === id;
   });
-  noteToUpdate.archived = !noteToUpdate.archived;
+  noteToUpdate.archived = true;
   (0, _populateTables.populateMainTable)();
   (0, _populateTables.populateSummaryTable)();
 };
-exports.toggleStatus = toggleStatus;
+exports.setArchived = setArchived;
 },{"./refs":"js/refs.js","./populateTables":"js/populateTables.js","../utils":"utils/index.js"}],"js/toggleModal.js":[function(require,module,exports) {
 "use strict";
 
@@ -518,7 +504,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61585" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51322" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

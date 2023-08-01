@@ -48,7 +48,6 @@ export const createNote = (e, notes) => {
 };
 
 export const deleteNote = (notes, id) => {
-  console.log(`index: `, index);
   const index = notes.indexOf((note) => note.id === id);
   notes.splice(index, 1);
   populateMainTable();
@@ -66,11 +65,9 @@ export const editNote = (note) => {
   refs.contentInput.value = note.content;
 };
 
-export const toggleStatus = (notes, id) => {
+export const setArchived = (notes, id) => {
   let noteToUpdate = notes.find((note) => note.id === id);
-
-  noteToUpdate.archived = !noteToUpdate.archived;
-
+  noteToUpdate.archived = true;
   populateMainTable();
   populateSummaryTable();
 };
