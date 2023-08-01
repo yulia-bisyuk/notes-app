@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./node_modules/parcel-bundler/bin/cli serve ./index.html --port 8080",
-    "build": "node ./node_modules/parcel-bundler/bin/cli build ./index.html --out-dir ./dist/",
+    "build": "node ./node_modules/parcel-bundler/bin/cli build ./index.html ",
     "lint": "node ./node_modules/eslint/bin/eslint . --ext .js --fix"
   },
   "repository": {

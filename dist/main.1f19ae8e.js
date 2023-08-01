@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 function getBundleURLCached() {
   if (!bundleURL) {
@@ -142,7 +142,7 @@ function getBaseURL(url) {
 }
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
 var bundle = require('./bundle-url');
 function updateLink(link) {
   var newLink = link.cloneNode();
@@ -168,11 +168,11 @@ function reloadCSS() {
   }, 50);
 }
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"style.scss":[function(require,module,exports) {
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"style.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/refs.js":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/js/refs.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -197,7 +197,7 @@ var refs = {
   errorMessage: document.querySelector('.error-message')
 };
 exports.refs = refs;
-},{}],"data/notes.js":[function(require,module,exports) {
+},{}],"src/data/notes.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -255,7 +255,7 @@ var notes = [{
   archived: false
 }];
 exports.notes = notes;
-},{}],"utils/index.js":[function(require,module,exports) {
+},{}],"src/utils/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -295,7 +295,7 @@ var createCategoryIcon = function createCategoryIcon(category) {
   }
 };
 exports.createCategoryIcon = createCategoryIcon;
-},{}],"js/populateTables.js":[function(require,module,exports) {
+},{}],"src/js/populateTables.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -337,7 +337,7 @@ var populateMainTable = function populateMainTable() {
   document.querySelectorAll('.table-body-item').forEach(function (tr) {
     return tr.remove();
   });
-  return activeNotes.map(function (note) {
+  return activeNotes.map(function (note, index) {
     var template = _refs.refs.rowTemplate.content.cloneNode(true);
     template.querySelector('.created').textContent = note.created;
     template.querySelector('.category-icon').insertAdjacentHTML('afterbegin', (0, _utils.createCategoryIcon)(note.category) || '');
@@ -346,7 +346,7 @@ var populateMainTable = function populateMainTable() {
     template.querySelector('.dates').textContent = note.dates;
     var deleteBtn = template.querySelector('.delete-button');
     deleteBtn.addEventListener('click', function () {
-      return (0, _actions.deleteNote)(_notes.notes, note.id);
+      return (0, _actions.deleteNote)(_notes.notes, index);
     });
     var editBtn = template.querySelector('.edit-button');
     editBtn.addEventListener('click', function () {
@@ -377,7 +377,7 @@ _refs.refs.createForm.addEventListener('submit', function (e) {
 });
 populateMainTable();
 populateSummaryTable();
-},{"./refs":"js/refs.js","../data/notes":"data/notes.js","../utils":"utils/index.js","./actions":"js/actions.js"}],"js/actions.js":[function(require,module,exports) {
+},{"./refs":"src/js/refs.js","../data/notes":"src/data/notes.js","../utils":"src/utils/index.js","./actions":"src/js/actions.js"}],"src/js/actions.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -431,10 +431,8 @@ var createNote = function createNote(e, notes) {
   (0, _populateTables.populateSummaryTable)();
 };
 exports.createNote = createNote;
-var deleteNote = function deleteNote(notes, id) {
-  var index = notes.indexOf(function (note) {
-    return note.id === id;
-  });
+var deleteNote = function deleteNote(notes, index) {
+  // const index = notes.indexOf((note) => note.id === id);
   notes.splice(index, 1);
   (0, _populateTables.populateMainTable)();
   (0, _populateTables.populateSummaryTable)();
@@ -459,7 +457,7 @@ var setArchived = function setArchived(notes, id) {
   (0, _populateTables.populateSummaryTable)();
 };
 exports.setArchived = setArchived;
-},{"./refs":"js/refs.js","./populateTables":"js/populateTables.js","../utils":"utils/index.js"}],"js/toggleModal.js":[function(require,module,exports) {
+},{"./refs":"src/js/refs.js","./populateTables":"src/js/populateTables.js","../utils":"src/utils/index.js"}],"src/js/toggleModal.js":[function(require,module,exports) {
 "use strict";
 
 var _refs = require("./refs");
@@ -472,14 +470,14 @@ _refs.refs.createButton.addEventListener('click', function () {
 _refs.refs.closeButton.addEventListener('click', function () {
   _refs.refs.modal.classList.add('hidden');
 });
-},{"./refs":"js/refs.js"}],"main.js":[function(require,module,exports) {
+},{"./refs":"src/js/refs.js"}],"main.js":[function(require,module,exports) {
 'use strict';
 
 require("./style.scss");
-require("./js/actions");
-require("./js/populateTables");
-require("./js/toggleModal");
-},{"./style.scss":"style.scss","./js/actions":"js/actions.js","./js/populateTables":"js/populateTables.js","./js/toggleModal":"js/toggleModal.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+require("./src/js/actions");
+require("./src/js/populateTables");
+require("./src/js/toggleModal");
+},{"./style.scss":"style.scss","./src/js/actions":"src/js/actions.js","./src/js/populateTables":"src/js/populateTables.js","./src/js/toggleModal":"src/js/toggleModal.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -504,7 +502,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51322" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50643" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -648,5 +646,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","main.js"], null)
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","main.js"], null)
 //# sourceMappingURL=/main.1f19ae8e.js.map
