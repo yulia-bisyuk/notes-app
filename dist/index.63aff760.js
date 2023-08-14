@@ -575,10 +575,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"adjPd":[function(require,module,exports) {
 var _actions = require("./src/js/actions");
-// import './src/js/refs';
-// import './src/js/actions';
 var _populateTables = require("./src/js/populateTables");
-// import './src/js/populateTables';
 var _toggleModal = require("./src/js/toggleModal");
 "use strict";
 

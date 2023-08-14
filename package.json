@@ -8,7 +8,6 @@
     "start": "parcel index.html",
     "build": "parcel build index.html",
     "lint": "node ./node_modules/eslint/bin/eslint . --ext .js --fix",
-    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
