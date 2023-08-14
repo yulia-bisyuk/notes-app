@@ -43,6 +43,8 @@ export const createNote = (e, notes) => {
 
   refs.createForm.reset();
   refs.closeButton.click();
+  isEdit = false;
+
   populateMainTable();
   populateSummaryTable();
 };
@@ -63,6 +65,7 @@ export const editNote = (note) => {
 
   refs.categoryInput.value = note.category;
   refs.contentInput.value = note.content;
+  isEdit = false;
 };
 
 export const setArchived = (notes, id) => {

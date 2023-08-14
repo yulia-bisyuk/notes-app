@@ -2,31 +2,33 @@
   "name": "notes-app",
   "version": "1.0.0",
   "description": "A JavaScript project",
-  "main": "main.js",
   "source": "index.html",
   "homepage": "http://yulia-bisyuk.github.io/notes-app",
   "scripts": {
-    "start": "node ./node_modules/parcel-bundler/bin/cli serve index.html --port 8080",
-    "build": "node ./node_modules/parcel-bundler/bin/cli build index.html --out-dir ./dist/",
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
     "lint": "node ./node_modules/eslint/bin/eslint . --ext .js --fix",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/yulia-bisyuk/notes-app"
   },
+  "browserslist": "> 0.25%, not dead",
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.9.3",
     "eslint": "^8.45.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "gh-pages": "^5.0.0",
-    "parcel-bundler": "^1.12.5"
+    "parcel": "^2.0.0"
   },
   "dependencies": {
-    "sass": "^1.64.1"
+    "sass": "^1.64.1",
+    "@swc/helpers": "^0.5.0"
   }
 }

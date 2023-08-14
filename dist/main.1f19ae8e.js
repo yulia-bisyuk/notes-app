@@ -372,6 +372,7 @@ var createNote = function createNote(e, notes) {
   }
   _refs.refs.createForm.reset();
   _refs.refs.closeButton.click();
+  isEdit = false;
   (0, _populateTables.populateMainTable)();
   (0, _populateTables.populateSummaryTable)();
 };
@@ -391,6 +392,7 @@ var editNote = function editNote(note) {
   _refs.refs.modalSubmitButton.innerText = 'Edit';
   _refs.refs.categoryInput.value = note.category;
   _refs.refs.contentInput.value = note.content;
+  isEdit = false;
 };
 exports.editNote = editNote;
 var setArchived = function setArchived(notes, id) {
@@ -446,7 +448,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60827" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52582" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
