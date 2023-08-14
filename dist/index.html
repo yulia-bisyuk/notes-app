@@ -1,1 +1,149 @@
-<!DOCTYPE html><html lang="en"><head><title>Notes App</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="/index.dc755fa7.css"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body> <div class="wrapper">  <h1>Active Notes Table</h1> <table> <thead class="table-head"> <tr class="table-head-item"> <th>Created</th> <th>Category</th> <th>Content</th> <th>Dates</th> <th>Actions</th> </tr> </thead> <tbody id="table-body">  <template id="table-item"> <tr class="table-body-item"> <td class="created"></td> <td> <div class="category-icon flex-start"> <span class="category-name"></span> </div> </td> <td class="content"></td> <td class="dates"></td> <td> <div class="flex"> <button class="edit-button table-body-button" name="edit-button"> <svg width="30" height="30" fill="none" viewBox="0 0 32 32"><path d="m15 6 3 3m-5 11h8M5 16l-1 4 4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0L5 16Z" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> </button> <button class="archive-button table-body-button"> <svg width="30" height="30" viewBox="0 0 32 32"><path d="m20.54 5.23-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27ZM6.24 5h11.52l.81.97H5.44l.8-.97ZM5 19V8h14v11H5Zm8.45-9h-2.9v3H8l4 4 4-4h-2.55v-3Z" fill="#777"/></svg> </button> <button class="delete-button table-body-button"> <svg width="30" height="30" viewBox="0 0 32 32"><path d="M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4V4Zm2 2h6V4H9v2ZM6.074 8l.857 12H17.07l.857-12H6.074ZM10 10a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1Z" fill="#777"/></svg> </button> </div> </td> </tr> </template> </tbody> </table> <button type="button" id="create" class="create-button"> Create note </button> </div>  <div class="wrapper"> <h1>Summary Table</h1> <table> <thead class="table-head"> <tr class="table-head-item"> <th>Note Category</th> <th>Active</th> <th>Archived</th> </tr> </thead> <tbody id="summary-table-body">  <template id="summary-table-item"> <tr class="table-body-item"> <td> <div class="category-icon flex-start"> <span class="category-name"></span> </div> </td> <td class="active"></td> <td class="archived"></td> </tr> </template> </tbody> </table> </div>  <div id="modal" class="hidden modal"> <div class="overlay" id="overlay"> <div class="modal-wrap"> <div class="modal-head"> <h1 class="modal-title"></h1> <button type="button" class="button-close" id="close"> <svg width="30" height="30" fill="#777" viewBox="0 0 32 32"><path d="M23.733 10.304 22.229 8.8l-5.963 5.963L10.303 8.8l-1.504 1.504 5.963 5.963-5.963 5.963 1.504 1.504 5.963-5.963 5.963 5.963 1.504-1.504-5.963-5.963 5.963-5.963z"/></svg> </button> </div> <form id="create-form" class="create-form"> <label for="category">Choose a Category:</label> <select name="category" id="category"> <option value>Category</option> <option value="Task">Task</option> <option value="Random Thought">Random Thought</option> <option value="Idea">Idea</option> </select> <label for="note-content">Write your note below</label> <textarea id="note-content" name="note-content" rows="10" placeholder="What are your thought today?"></textarea> <p class="error-message"></p> <div class="note-dates"> <div> <label for="start">Start date:</label> <input type="date" id="start"> </div> <div> <label for="end">End date:</label> <input type="date" id="end"> </div> </div> <button type="submit" class="create-button" id="submit-button"> </button> </form> </div> </div> </div> <script type="module" src="/index.dfc8cac7.js"></script><script src="/index.729da642.js" nomodule defer></script> </body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Notes App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/index.8353e49f.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- main table -->
+    <h1>Active Notes Table</h1>
+    <table>
+      <thead class="table-head">
+        <tr class="table-head-item">
+          <th>Created</th>
+          <th>Category</th>
+          <th>Content</th>
+          <th>Dates</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+
+        <!-- single item template -->
+        <template id="table-item">
+          <tr class="table-body-item">
+            <td class="created"></td>
+            <td>
+              <div class="flex-start category-icon">
+                <span class="category-name"></span>
+              </div>
+            </td>
+            <td class="content"></td>
+            <td class="dates"></td>
+            <td>
+              <div class="flex">
+
+                <button class="table-body-button edit-button" name="edit-button">
+                  <svg width="30" height="30" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <path d="M15 6.00019L18 9.00019M13 20.0002H21M5 16.0002L4 20.0002L8 19.0002L19.586 7.41419C19.9609 7.03913 20.1716 6.53051 20.1716 6.00019C20.1716 5.46986 19.9609 4.96124 19.586 4.58619L19.414 4.41419C19.0389 4.03924 18.5303 3.82861 18 3.82861C17.4697 3.82861 16.9611 4.03924 16.586 4.41419L5 16.0002Z" stroke="#777777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+
+                <button class="table-body-button archive-button">
+                  <svg width="30" height="30" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.54 5.23L19.15 3.55C18.88 3.21 18.47 3 18 3H6C5.53 3 5.12 3.21 4.84 3.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V6.5C21 6.02 20.83 5.57 20.54 5.23ZM6.24 5H17.76L18.57 5.97H5.44L6.24 5ZM5 19V8H19V19H5ZM13.45 10H10.55V13H8L12 17L16 13H13.45V10Z" fill="#777777"></path>
+                  </svg>
+                </button>
+
+                <button class="table-body-button delete-button">
+                  <svg width="30" height="30" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 4C7 3.46957 7.21071 2.96086 7.58579 2.58579C7.96086 2.21071 8.46957 2 9 2H15C15.5304 2 16.0391 2.21071 16.4142 2.58579C16.7893 2.96086 17 3.46957 17 4V6H21C21.2652 6 21.5196 6.10536 21.7071 6.29289C21.8946 6.48043 22 6.73478 22 7C22 7.26522 21.8946 7.51957 21.7071 7.70711C21.5196 7.89464 21.2652 8 21 8H19.931L19.064 20.142C19.0281 20.6466 18.8023 21.1188 18.4321 21.4636C18.0619 21.8083 17.5749 22 17.069 22H6.93C6.42414 22 5.93707 21.8083 5.56688 21.4636C5.1967 21.1188 4.97092 20.6466 4.935 20.142L4.07 8H3C2.73478 8 2.48043 7.89464 2.29289 7.70711C2.10536 7.51957 2 7.26522 2 7C2 6.73478 2.10536 6.48043 2.29289 6.29289C2.48043 6.10536 2.73478 6 3 6H7V4ZM9 6H15V4H9V6ZM6.074 8L6.931 20H17.07L17.927 8H6.074ZM10 10C10.2652 10 10.5196 10.1054 10.7071 10.2929C10.8946 10.4804 11 10.7348 11 11V17C11 17.2652 10.8946 17.5196 10.7071 17.7071C10.5196 17.8946 10.2652 18 10 18C9.73478 18 9.48043 17.8946 9.29289 17.7071C9.10536 17.5196 9 17.2652 9 17V11C9 10.7348 9.10536 10.4804 9.29289 10.2929C9.48043 10.1054 9.73478 10 10 10ZM14 10C14.2652 10 14.5196 10.1054 14.7071 10.2929C14.8946 10.4804 15 10.7348 15 11V17C15 17.2652 14.8946 17.5196 14.7071 17.7071C14.5196 17.8946 14.2652 18 14 18C13.7348 18 13.4804 17.8946 13.2929 17.7071C13.1054 17.5196 13 17.2652 13 17V11C13 10.7348 13.1054 10.4804 13.2929 10.2929C13.4804 10.1054 13.7348 10 14 10Z" fill="#777777"></path>
+                  </svg>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <button type="button" id="create" class="create-button">
+      Create note
+    </button>
+  </div>
+
+  <!-- summary table -->
+  <div class="wrapper">
+    <h1>Summary Table</h1>
+    <table>
+      <thead class="table-head">
+        <tr class="table-head-item">
+          <th>Note Category</th>
+          <th>Active</th>
+          <th>Archived</th>
+        </tr>
+      </thead>
+
+      <tbody id="summary-table-body">
+        <!-- single item template -->
+        <template id="summary-table-item">
+          <tr class="table-body-item">
+            <td>
+              <div class="flex-start category-icon">
+                <span class="category-name"></span>
+              </div>
+            </td>
+            <td class="active"></td>
+            <td class="archived"></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- modal -->
+  <div id="modal" class="modal hidden">
+    <div class="overlay" id="overlay">
+      <div class="modal-wrap">
+        <div class="modal-head">
+          <h1 class="modal-title"></h1>
+          <button type="button" class="button-close" id="close">
+            <svg width="30" height="30" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#777777">
+              <path d="M23.733 10.304l-1.504-1.504-5.963 5.963-5.963-5.963-1.504 1.504 5.963 5.963-5.963 5.963 1.504 1.504 5.963-5.963 5.963 5.963 1.504-1.504-5.963-5.963 5.963-5.963z">
+              </path>
+            </svg>
+          </button>
+        </div>
+        <form id="create-form" class="create-form">
+          <label for="category">Choose a Category:</label>
+          <select name="category" id="category">
+            <option value="">Category</option>
+            <option value="Task">Task</option>
+            <option value="Random Thought">Random Thought</option>
+            <option value="Idea">Idea</option>
+          </select>
+
+          <label for="note-content">Write your note below</label>
+          <textarea id="note-content" name="note-content" rows="10" placeholder="What are your thought today?"></textarea>
+          <p class="error-message"></p>
+          <div class="note-dates">
+            <div>
+              <label for="start">Start date:</label>
+              <input type="date" id="start">
+            </div>
+            <div>
+              <label for="end">End date:</label>
+              <input type="date" id="end">
+            </div>
+          </div>
+
+          <button type="submit" class="create-button" id="submit-button">
+
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/index.63aff760.js" defer=""></script>
+
+</body>
+
+</html>
