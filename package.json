@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A JavaScript project",
   "source": "index.html",
-  "homepage": "http://yulia-bisyuk.github.io/notes-app",
+  "homepage": "http://yulia-bisyuk.github.io/notes-app/",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yulia-bisyuk/notes-app"
+    "url": "https://github.com/yulia-bisyuk/notes-app/"
   },
   "browserslist": "> 0.25%, not dead",
   "keywords": [],
